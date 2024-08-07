@@ -80,13 +80,8 @@ void ProcessManager::startWindowManager()
 
     wmProcess->start("kwin_wayland", QStringList());
 
-    if (!m_app->wayland()) {
-        QEventLoop waitLoop;
-        m_waitLoop = &waitLoop;
-        QTimer::singleShot(30 * 1000, &waitLoop, SLOT(quit()));
-        waitLoop.exec();
-        m_waitLoop = nullptr;
-    }
+    // 不需要等待窗口管理器启动完成
+    // Wayland 环境下不需要像 X11 一样等待窗口管理器启动完成
 }
 
 
