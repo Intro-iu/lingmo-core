@@ -76,19 +76,19 @@ void ProcessManager::logout()
 
 void ProcessManager::startWindowManager()
 {
-    auto *wmProcess = new QProcess;
+    QProcess *wmProcess = new QProcess;
 
-    wmProcess->start(m_app->wayland() ? "kwin_wayland" : "kwin_x11", QStringList());
+    wmProcess->start("kwin_wayland", QStringList());
 
     if (!m_app->wayland()) {
         QEventLoop waitLoop;
         m_waitLoop = &waitLoop;
-        // add a timeout to avoid infinite blocking if a WM fail to execute.
         QTimer::singleShot(30 * 1000, &waitLoop, SLOT(quit()));
         waitLoop.exec();
         m_waitLoop = nullptr;
     }
 }
+
 
 void ProcessManager::startDesktopProcess()
 {
